@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Character
 {
-    class Inventory
+    class Defence
     {
+        public int magicalProtection;
+        public int physicalProtection;
     }
 }

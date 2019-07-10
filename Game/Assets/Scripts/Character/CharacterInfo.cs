@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Character
 {
     class CharacterInfo
     {
@@ -12,6 +12,7 @@ namespace Assets.Scripts
 
         public Inventory inventory;
         public Slots stots;
+        public Weapon weapon;
         public float healthPoints;
         public float manaPoints;
         public float agilityPoints;
