@@ -185,7 +185,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 2.63}
+  m_AnchoredPosition: {x: -0.07, y: 2.72}
   m_SizeDelta: {x: 20.48, y: 10.24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &1024776198
@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 1172676087}
   m_Layer: 0
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -381,6 +381,7 @@ GameObject:
   - component: {fileID: 1517467132}
   - component: {fileID: 1517467131}
   - component: {fileID: 1517467130}
+  - component: {fileID: 1517467134}
   m_Layer: 0
   m_Name: Jotaro
   m_TagString: Untagged
@@ -518,6 +519,22 @@ Transform:
   m_Father: {fileID: 223064243}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1517467134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517467129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5089bf0fdb585409d32b88e38632cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isControlable: 0
+  defaultSpeed: 0
+  defaultUpForce: 0
+  jumpCount: 0
 --- !u!1 &1609653678
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,6 +547,7 @@ GameObject:
   - component: {fileID: 1609653681}
   - component: {fileID: 1609653680}
   - component: {fileID: 1609653679}
+  - component: {fileID: 1609653683}
   m_Layer: 0
   m_Name: Saber
   m_TagString: Untagged
@@ -666,12 +684,28 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609653678}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6836298, y: 0.313453, z: 16.751953}
+  m_LocalPosition: {x: -0.46, y: 1.57, z: 16.751953}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 223064243}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1609653683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609653678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5089bf0fdb585409d32b88e38632cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isControlable: 1
+  defaultSpeed: 2
+  defaultUpForce: 250
+  jumpCount: 0
 --- !u!1 &1733469019
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,4 +788,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1769942029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1769942031}
+  - component: {fileID: 1769942030}
+  m_Layer: 0
+  m_Name: Colision Ignore
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1769942030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769942029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5c2aad27c29e0f44ad5c642875a90b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  character1: {fileID: 1609653678}
+  character2: {fileID: 1517467129}
+--- !u!4 &1769942031
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769942029}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.47397378, y: -0.043269694, z: -6.3274603}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

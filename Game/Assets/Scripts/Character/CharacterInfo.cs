@@ -13,6 +13,7 @@ namespace Assets.Scripts.Character
         public Inventory inventory;
         public Slots stots;
         public Weapon weapon;
+        public Position position;
         public float healthPoints;
         public float manaPoints;
         public float agilityPoints;
