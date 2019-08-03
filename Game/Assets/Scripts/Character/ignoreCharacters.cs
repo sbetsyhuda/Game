@@ -12,7 +12,8 @@ namespace UnityObjects
         // Start is called before the first frame update
         void Start()
         {
-            Physics2D.IgnoreCollision(character1.GetComponent<Collider2D>(), character2.GetComponent<Collider2D>());
+            Physics2D.IgnoreLayerCollision(8, 8);
+            //Physics2D.IgnoreCollision(character1.GetComponent<Collider2D>(), character2.GetComponent<Collider2D>());
         }
 
         // Update is called once per frame
