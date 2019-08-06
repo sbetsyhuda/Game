@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Character
 {
-    class CharacterInfo
+    class GameCharacterInfo
     {
         public enum CharacterClass { Warrior, Mage, Archer, Rogue};
 
@@ -21,5 +21,11 @@ namespace Assets.Scripts.Character
         public Defence defence;
         public MainInfo info;
         public CharacterClass characterClass;
+
+
+        public GameCharacterInfo()
+        {
+            healthPoints = 100;
+        }
     }
 }

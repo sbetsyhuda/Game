@@ -13,6 +13,8 @@ namespace UnityObjects
         void Start()
         {
             Physics2D.IgnoreLayerCollision(8, 8);
+            Physics2D.IgnoreLayerCollision(8, 9);
+            Physics2D.IgnoreLayerCollision(9, 9);
             //Physics2D.IgnoreCollision(character1.GetComponent<Collider2D>(), character2.GetComponent<Collider2D>());
         }
 
