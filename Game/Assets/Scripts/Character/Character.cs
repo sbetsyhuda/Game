@@ -70,10 +70,16 @@ namespace UnityObjects
 
         
 
-        public void GetDamage(float damage)
+        public void GetDamage(Damage damage)
         {
-            info.healthPoints -= damage;
-            Debug.Log(string.Format("{0} damage taken", damage));
+            Debug.Log(damage.physicalDamage);
+            float prevHealth = info.healthPoints;
+            if (damage.physicalDamage > 0)
+                info.healthPoints -= damage.physicalDamage * Mathf.Pow(2,-info.defence.physicalProtection / damage.physicalDamage);
+            if(damage.magicalDamage > 0)
+                info.healthPoints -= damage.magicalDamage  * Mathf.Pow(2, -info.defence.magicalProtection / damage.magicalDamage);
+
+            Debug.Log(string.Format("{0} damage taken", prevHealth - info.healthPoints));
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

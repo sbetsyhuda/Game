@@ -14,7 +14,6 @@ public class HealthbarUpdate : MonoBehaviour
     void Start()
     {
         character = transform.parent.gameObject.transform.parent.gameObject.GetComponent<Character>();
-        Debug.Log(transform.parent.gameObject.transform.parent.gameObject.tag);
     }
 
     // Update is called once per frame

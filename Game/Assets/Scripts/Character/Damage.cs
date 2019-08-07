@@ -8,7 +8,15 @@ namespace Assets.Scripts.Character
 {
     public class Damage
     {
+
+
         public float magicalDamage;
         public float physicalDamage;
+
+        public Damage(float magDamage, float physDamage)
+        {
+            magicalDamage = magDamage;
+            physicalDamage = physDamage;
+        }
     }
 }

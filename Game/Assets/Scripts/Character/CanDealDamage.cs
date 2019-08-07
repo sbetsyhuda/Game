@@ -20,10 +20,12 @@ namespace Assets.Scripts.Character
         public float timeBetweenAttacks;
 
         private float attackTimer;
+        private UnityObjects.Character character;
 
         private void Start()
         {
-
+            character = transform.GetComponent<UnityObjects.Character>();
+            Debug.Log(character.tag);
             attackTimer = 0;
         }
 
@@ -47,7 +49,7 @@ namespace Assets.Scripts.Character
             Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPosition.position, attackRange, whatIsEnemies);
             for (int i = 0; i < enemies.Length; ++i)
             {
-                enemies[i].GetComponent<UnityObjects.Character>().GetDamage(defaultDamage);
+                enemies[i].GetComponent<UnityObjects.Character>().GetDamage(character.info.baseAttackDamage);
             }
         }
         private void OnDrawGizmosSelected()

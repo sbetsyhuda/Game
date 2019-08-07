@@ -19,6 +19,7 @@ namespace Assets.Scripts.Character
         public float manaPoints;
         public float agilityPoints;
         public float staminaPoints;
+        public Damage baseAttackDamage;
         public Defence defence;
         public MainInfo info;
         public CharacterClass characterClass;
@@ -28,6 +29,8 @@ namespace Assets.Scripts.Character
         {
             healthPoints = 100;
             maxHealthPoints = 100;
+            baseAttackDamage = new Damage(10, 10);
+            defence = new Defence(10, 10);
         }
     }
 }

@@ -8,7 +8,12 @@ namespace Assets.Scripts.Character
 {
     public class Defence
     {
-        public int magicalProtection;
-        public int physicalProtection;
+        public float magicalProtection;
+        public float physicalProtection;
+        public Defence(float magProtection, float physProtection)
+        {
+            magicalProtection = magProtection;
+            physicalProtection = physProtection;
+        }
     }
 }
