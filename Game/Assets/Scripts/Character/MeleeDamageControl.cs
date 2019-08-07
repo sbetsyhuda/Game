@@ -10,7 +10,7 @@ namespace Assets.Scripts.Character
 {
 
     
-    class CanDealDamage : MonoBehaviour
+    class MeleeDamageControl : MonoBehaviour
     {
         public Transform attackPosition = null;
         public LayerMask whatIsEnemies;
