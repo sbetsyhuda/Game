@@ -11,14 +11,8 @@ namespace UnityObjects
         public bool isControlable;
         public float defaultSpeed;
         public float defaultUpForce;
-        public float timeBetweenAttacks;
 
-        public Transform attackPosition;
-        public LayerMask whatIsEnemies;
-        public float attackRange;
-        public float defaultDamage;
 
-        private float attackTimer;
         private int jumpCount;
         private Animator animator;
         private Rigidbody2D rb2d;
@@ -28,10 +22,10 @@ namespace UnityObjects
         void Start()
         {
             characterInfo = new GameCharacterInfo();
-            attackTimer = 0;
             animator = GetComponent<Animator>();
             rb2d = GetComponent<Rigidbody2D>();
             jumpCount = 0;
+            rb2d.freezeRotation = true;
         }
 
         // Update is called once per frame
@@ -39,7 +33,6 @@ namespace UnityObjects
         {
             if(isControlable)
             {
-                attackTimer -= Time.deltaTime;
                 float horizontalSpeed = 0;
                 if (jumpCount == 0 && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)))
                 {
@@ -59,26 +52,11 @@ namespace UnityObjects
                     horizontalSpeed += defaultSpeed;
                 }
                 rb2d.velocity = new Vector2(horizontalSpeed, rb2d.velocity.y);
-                if(Input.GetKey(KeyCode.Space))
-                {
-                    if(attackTimer <=0)
-                    {
-                        DealDamage();
-                        attackTimer = timeBetweenAttacks;
-                    }
-                    
-                }
+                
             }
         }
 
-        private void DealDamage()
-        {
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPosition.position, attackRange, whatIsEnemies);
-            for(int i = 0; i < enemies.Length; ++i)
-            {
-                enemies[i].GetComponent<Character>().GetDamage(defaultDamage);
-            }
-        }
+        
 
         public void GetDamage(float damage)
         {
@@ -93,6 +71,8 @@ namespace UnityObjects
                 jumpCount = 0;
             }
         }
+
+        
     }
 }
 
