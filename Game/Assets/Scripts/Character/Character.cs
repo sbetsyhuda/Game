@@ -12,7 +12,7 @@ namespace UnityObjects
         public float defaultSpeed;
         public float defaultUpForce;
 
-
+        public int facingRight;
         private int jumpCount;
         private Animator animator;
         private Rigidbody2D rb2d;
@@ -21,6 +21,7 @@ namespace UnityObjects
         // Start is called before the first frame update
         void Start()
         {
+            facingRight = 1;
             characterInfo = new GameCharacterInfo();
             animator = GetComponent<Animator>();
             rb2d = GetComponent<Rigidbody2D>();
@@ -51,6 +52,17 @@ namespace UnityObjects
                 {
                     horizontalSpeed += defaultSpeed;
                 }
+                if(horizontalSpeed < 0 && facingRight == 1)
+                {
+                    facingRight = 0;
+                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                }
+                if (horizontalSpeed > 0 && facingRight == 0)
+                {
+                    facingRight = 1;
+                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                }
+
                 rb2d.velocity = new Vector2(horizontalSpeed, rb2d.velocity.y);
                 
             }
