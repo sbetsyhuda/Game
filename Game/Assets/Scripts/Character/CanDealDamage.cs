@@ -12,12 +12,12 @@ namespace Assets.Scripts.Character
     
     class CanDealDamage : MonoBehaviour
     {
-        public Transform attackPosition;
+        public Transform attackPosition = null;
         public LayerMask whatIsEnemies;
-        public float attackRange;
-        public float defaultDamage;
+        public float attackRange = 0;
+        public float defaultDamage = 0;
 
-        public float timeBetweenAttacks;
+        public float timeBetweenAttacks = 0;
 
         private float attackTimer;
         private UnityObjects.Character character;
