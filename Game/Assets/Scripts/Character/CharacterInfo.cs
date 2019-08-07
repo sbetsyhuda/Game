@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Character
 {
-    class GameCharacterInfo
+    public class GameCharacterInfo
     {
         public enum CharacterClass { Warrior, Mage, Archer, Rogue};
 
@@ -14,6 +14,7 @@ namespace Assets.Scripts.Character
         public Slots stots;
         public Weapon weapon;
         public Position position;
+        public float maxHealthPoints;
         public float healthPoints;
         public float manaPoints;
         public float agilityPoints;
@@ -26,6 +27,7 @@ namespace Assets.Scripts.Character
         public GameCharacterInfo()
         {
             healthPoints = 100;
+            maxHealthPoints = 100;
         }
     }
 }

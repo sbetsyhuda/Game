@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Character
 {
-    class Position
+    public class Position
     {
         public float x;
         public float y;

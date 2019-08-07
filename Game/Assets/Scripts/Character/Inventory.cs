@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Character
 {
-    class Inventory
+    public class Inventory
     {
         public int maxSize;
         public Item[] items;

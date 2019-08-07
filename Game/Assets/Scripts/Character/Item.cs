@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Character
 {
-    class Item // base class
+    public class Item // base class
     {
         public float weight;
         public float magicalPower;

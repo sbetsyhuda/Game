@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Character
 {
-    class Defence
+    public class Defence
     {
         public int magicalProtection;
         public int physicalProtection;

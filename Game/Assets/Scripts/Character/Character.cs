@@ -7,7 +7,7 @@ namespace UnityObjects
 {
     public class Character : MonoBehaviour
     {
-        GameCharacterInfo characterInfo;
+        public GameCharacterInfo info;
         public bool isControlable;
         public float defaultSpeed;
         public float defaultUpForce;
@@ -22,7 +22,7 @@ namespace UnityObjects
         void Start()
         {
             facingRight = 1;
-            characterInfo = new GameCharacterInfo();
+            info = new GameCharacterInfo();
             animator = GetComponent<Animator>();
             rb2d = GetComponent<Rigidbody2D>();
             jumpCount = 0;
@@ -72,7 +72,7 @@ namespace UnityObjects
 
         public void GetDamage(float damage)
         {
-            characterInfo.healthPoints -= damage;
+            info.healthPoints -= damage;
             Debug.Log(string.Format("{0} damage taken", damage));
         }
 

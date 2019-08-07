@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Character
 {
-    class Slots
+    public class Slots
     {
         public int currentSlot;
         public int maxSize;

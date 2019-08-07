@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Character
 {
-    class Damage
+    public class Damage
     {
         public float magicalDamage;
         public float physicalDamage;

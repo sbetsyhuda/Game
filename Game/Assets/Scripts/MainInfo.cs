@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    class MainInfo
+    public class MainInfo
     {
         public string name;
         public string description;

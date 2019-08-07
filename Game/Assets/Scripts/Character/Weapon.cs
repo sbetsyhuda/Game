@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Character
 {
-    class Weapon : Item
+    public class Weapon : Item
     {
         public enum WeaponType { Saber, Bow, Dagger, Staff, Crossbow, Shield, Bomb, Trap}
 
