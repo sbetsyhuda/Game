@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - floor
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Main Character
+  - Friendly Chatacters
   - 
   - 
   - 
@@ -49,4 +50,10 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 3929663003
+    locked: 0
+  - name: Player_1
+    uniqueID: 2550213793
+    locked: 0
+  - name: Player_2
+    uniqueID: 2577655403
     locked: 0
