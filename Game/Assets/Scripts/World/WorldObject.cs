@@ -4,10 +4,26 @@ using UnityEngine;
 
 namespace Assets.Scripts.World
 {
-	public class WorldObject
+	public abstract class WorldObject
 	{
-		public string type;
-		public Vector2 size;
-		public Vector2 position;
+		protected string name;
+		protected Vector2Int size;
+		protected Vector2Int position;
+
+		public string Name { get => name; }
+		public Vector2Int Size { get => size; }
+		public Vector2Int Position { get => position; }
+
+		public WorldObject(string name, Vector2Int size, Vector2Int position)
+		{
+			this.name = name;
+			this.size = size;
+			this.position = position;
+		}
+
+		public Sprite GetSprite()
+		{
+			return null;
+		}
 	}
 }

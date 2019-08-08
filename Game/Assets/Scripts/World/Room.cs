@@ -4,8 +4,11 @@ using UnityEngine;
 
 namespace Assets.Scripts.World
 {
-	public class Room : Location
+	public abstract class Room : Location
 	{
+		public Room(string name, Vector2Int size, Vector2Int position) : base(name, size, position)
+		{
 
+		}
 	}
 }
