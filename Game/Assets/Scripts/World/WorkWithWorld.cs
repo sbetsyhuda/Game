@@ -21,11 +21,13 @@ public class WorkWithWorld : MonoBehaviour
 
 		this.backgroundTexture = this.reactangleRoom.GetBackgroundTexture2D();
 		this.backgroundSprite = this.reactangleRoom.GetBackgroundSprite();
+
+		this.reactangleRoom.AddLocationToWorld(gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+		this.reactangleRoom.UpdateBackgroundPosition(gameObject);
     }
 }

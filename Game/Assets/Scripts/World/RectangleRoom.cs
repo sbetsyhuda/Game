@@ -11,6 +11,15 @@ namespace Assets.Scripts.World
 		protected Vector2Int[] availableBlocks;
 		protected float[] availableBlocksProbability;
 
+		protected GameObject floor;
+		protected Vector2Int floorSize;
+		protected GameObject ceiling;
+		protected Vector2Int ceilingSize;
+		protected GameObject leftWall;
+		protected Vector2Int leftWallSize;
+		protected GameObject rightWall;
+		protected Vector2Int rightWallSize;
+
 		public ReactangleRoom(string name, Vector2Int size, Vector2Int position, Texture blocksTexture, Vector2Int blockSize, Vector2Int[] availableBlocks, float[] availableBlocksProbability) : base(name, size, position)
 		{
 			this.blockSize = blockSize;
@@ -19,9 +28,11 @@ namespace Assets.Scripts.World
 			this.blocksTexture = blocksTexture;
 
 			CreateBackground();
+
+			CreateMainLayer();
 		}
 
-		private void CreateBackground()
+		protected override void CreateBackground()
 		{
 			this.backgroundSize = this.size - this.blockSize * 2;
 			this.backgroundTexture = new Texture2D(this.backgroundSize.x, this.backgroundSize.y, TextureFormat.RGBA32, false);
@@ -64,7 +75,61 @@ namespace Assets.Scripts.World
 			RenderTexture.active = currentRenderTexture;
 			RenderTexture.ReleaseTemporary(backgroundRenderTexture);
 
-			this.backgroundSprite = Sprite.Create(this.backgroundTexture, new Rect(0f, 0f, this.backgroundTexture.width, this.backgroundTexture.height), Vector2.zero);
+			this.backgroundSprite = Sprite.Create(this.backgroundTexture, new Rect(0f, 0f, this.backgroundTexture.width, this.backgroundTexture.height), new Vector2(0.5f, 0.5f));
+
+			AddBackgroundToLocation();
+		}
+
+		protected override void CreateMainLayer()
+		{
+			this.mainLayer = new GameObject("Main Layer");
+
+			CreateFloor();
+			CreateCeiling();
+			CreateLeftWall();
+			CreateRightWall();
+
+			AddMainLayerToLocation();
+		}
+
+		protected void CreateMainLayerItem(ref GameObject mainLayerItem, Vector2Int itemSize,  string name, Vector3 position)
+		{
+			mainLayerItem = new GameObject(name);
+			mainLayerItem.transform.parent = this.mainLayer.transform;
+			BoxCollider2D boxCollider2D = mainLayerItem.AddComponent<BoxCollider2D>();
+
+			boxCollider2D.size = new Vector2(itemSize.x / 100f, itemSize.y / 100f);
+			mainLayerItem.transform.position = position;
+		}
+
+		protected void CreateFloor()
+		{
+			this.floorSize = new Vector2Int(this.size.x + this.blockSize.x * 2, this.blockSize.y);
+
+			CreateMainLayerItem(ref this.floor, this.floorSize, "Floor", new Vector3(0f, this.size.y / -200f - floorSize.y / 200f, 0f));
+
+			this.floor.tag = "floor";
+		}
+
+		protected void CreateCeiling()
+		{
+			this.ceilingSize = new Vector2Int(this.size.x + this.blockSize.x * 2, this.blockSize.y);
+
+			CreateMainLayerItem(ref this.ceiling, this.ceilingSize, "Ceiling", new Vector3(0f, this.size.y / 200f + floorSize.y / 200f, 0f));
+		}
+
+		protected void CreateLeftWall()
+		{
+			this.leftWallSize = new Vector2Int(this.blockSize.x, this.size.y);
+
+			CreateMainLayerItem(ref this.leftWall, this.leftWallSize, "Left Wall", new Vector3(this.size.x / -200f - leftWallSize.x / 200f, 0f));
+		}
+
+		protected void CreateRightWall()
+		{
+			this.rightWallSize = new Vector2Int(this.blockSize.x, this.size.y);
+
+			CreateMainLayerItem(ref this.rightWall, this.rightWallSize, "Right Wall", new Vector3(this.size.x / 200f + rightWallSize.x / 200f, 0f));
 		}
 	}
 }
