@@ -11,13 +11,18 @@ namespace Assets.Scripts.World
 
 		protected GameObject locationGameObject;
 
-		protected GameObject backgroundGameObject;
+		protected GameObject background;
+		protected Vector2Int backgroundSize;
 		protected Vector3 backgroundOffset;
 		protected Texture2D backgroundTexture;
 		protected Sprite backgroundSprite;
-		protected Vector2Int backgroundSize;
 
 		protected GameObject mainLayer;
+
+		protected GameObject frontLayer;
+		protected Vector2Int frontLayerSize;
+		protected Texture2D frontLayerTexture;
+		protected Sprite frontLayerSprite;
 
 		public Location(string name, Vector2Int size, Vector2Int position) : base(name, size, position)
 		{
@@ -27,6 +32,8 @@ namespace Assets.Scripts.World
 		}
 
 		protected abstract void CreateBackground();
+
+		protected abstract void CreateFrontLayer();
 
 		public Texture2D GetBackgroundTexture2D()
 		{
@@ -42,15 +49,25 @@ namespace Assets.Scripts.World
 			this.locationGameObject.transform.parent = world.transform;
 		}
 
+
+		protected void AddItemToLocation(ref GameObject item, string name, Sprite sprite, Vector3 offset)
+		{
+			item = new GameObject(name);
+			SpriteRenderer spriteRenderer = item.AddComponent<SpriteRenderer>();
+			spriteRenderer.sprite = sprite;
+
+			item.transform.parent = this.locationGameObject.transform;
+			item.transform.position = offset;
+		}
+
 		protected void AddBackgroundToLocation()
 		{
-			this.backgroundGameObject = new GameObject("Background GameObject");
-			SpriteRenderer spriteRenderer = this.backgroundGameObject.AddComponent<SpriteRenderer>();
-			spriteRenderer.sprite = this.backgroundSprite;
+			AddItemToLocation(ref this.background, "Background", this.backgroundSprite, Vector3.forward);
+		}
 
-			this.backgroundGameObject.transform.position += new Vector3(0f, 0f, 1f);
-
-			this.backgroundGameObject.transform.parent = this.locationGameObject.transform;
+		protected void AddFrontLayerToLocation()
+		{
+			AddItemToLocation(ref this.frontLayer, "Front Layer", this.frontLayerSprite, Vector3.back);
 		}
 
 		protected void AddMainLayerToLocation()
@@ -73,7 +90,7 @@ namespace Assets.Scripts.World
 			float xOffset = GetCharacterPositionOffset(character.transform.position.x, this.size.x / 100f, this.backgroundSize.x / 100f);
 			float yOffset = GetCharacterPositionOffset(character.transform.position.y, this.size.y / 100f, this.backgroundSize.y / 100f);
 
-			this.backgroundGameObject.transform.position = new Vector3(xOffset, yOffset, 0f) + backgroundOffset;
+			this.background.transform.position = new Vector3(xOffset, yOffset, 0f) + this.backgroundOffset;
 		}
 
 		protected abstract void CreateMainLayer();
