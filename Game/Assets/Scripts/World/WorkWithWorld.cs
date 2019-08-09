@@ -31,5 +31,6 @@ public class WorkWithWorld : MonoBehaviour
     void Update()
     {
 		this.reactangleRoom.UpdateBackgroundPosition(gameObject, character);
+		this.reactangleRoom.UpdateFrontLayerPosition(gameObject, character);
     }
 }

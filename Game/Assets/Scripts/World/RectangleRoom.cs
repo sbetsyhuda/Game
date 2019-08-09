@@ -127,7 +127,8 @@ namespace Assets.Scripts.World
 
 		protected override void CreateFrontLayer()
 		{
-			this.frontLayerSize = this.size + this.blockSize * 2;
+			this.frontLayerSize = this.size + this.blockSize * 4;
+			this.frontLayerInteriorSize = this.size + this.blockSize * 2;
 
 			CreateSprite(ref this.frontLayerTexture, ref this.frontLayerSprite, this.frontLayerSize, FrontLayerFill);
 

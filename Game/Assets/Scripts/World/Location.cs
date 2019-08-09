@@ -21,6 +21,8 @@ namespace Assets.Scripts.World
 
 		protected GameObject frontLayer;
 		protected Vector2Int frontLayerSize;
+		protected Vector2Int frontLayerInteriorSize;
+		protected Vector3 frontLayerOffset;
 		protected Texture2D frontLayerTexture;
 		protected Sprite frontLayerSprite;
 
@@ -29,6 +31,7 @@ namespace Assets.Scripts.World
 			this.locationGameObject = new GameObject(name);
 			this.objects = new List<WorldObject>();
 			this.backgroundOffset = Vector3.forward;
+			this.frontLayerOffset = Vector3.back;
 		}
 
 		protected abstract void CreateBackground();
@@ -62,12 +65,12 @@ namespace Assets.Scripts.World
 
 		protected void AddBackgroundToLocation()
 		{
-			AddItemToLocation(ref this.background, "Background", this.backgroundSprite, Vector3.forward);
+			AddItemToLocation(ref this.background, "Background", this.backgroundSprite, this.backgroundOffset);
 		}
 
 		protected void AddFrontLayerToLocation()
 		{
-			AddItemToLocation(ref this.frontLayer, "Front Layer", this.frontLayerSprite, Vector3.back);
+			AddItemToLocation(ref this.frontLayer, "Front Layer", this.frontLayerSprite, this.frontLayerOffset);
 		}
 
 		protected void AddMainLayerToLocation()
@@ -91,6 +94,14 @@ namespace Assets.Scripts.World
 			float yOffset = GetCharacterPositionOffset(character.transform.position.y, this.size.y / 100f, this.backgroundSize.y / 100f);
 
 			this.background.transform.position = new Vector3(xOffset, yOffset, 0f) + this.backgroundOffset;
+		}
+
+		public void UpdateFrontLayerPosition(GameObject world, GameObject character)
+		{
+			float xOffset = GetCharacterPositionOffset(character.transform.position.x, this.size.x / 100f, this.frontLayerInteriorSize.x / 100f);
+			float yOffset = GetCharacterPositionOffset(character.transform.position.y, this.size.y / 100f, this.frontLayerInteriorSize.y / 100f);
+
+			this.frontLayer.transform.position = new Vector3(xOffset, yOffset, 0f) + this.frontLayerOffset;
 		}
 
 		protected abstract void CreateMainLayer();
