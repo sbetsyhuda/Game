@@ -12,6 +12,7 @@ namespace Assets.Scripts.World
 		protected GameObject locationGameObject;
 
 		protected GameObject backgroundGameObject;
+		protected Vector3 backgroundOffset;
 		protected Texture2D backgroundTexture;
 		protected Sprite backgroundSprite;
 		protected Vector2Int backgroundSize;
@@ -22,6 +23,7 @@ namespace Assets.Scripts.World
 		{
 			this.locationGameObject = new GameObject(name);
 			this.objects = new List<WorldObject>();
+			this.backgroundOffset = Vector3.forward;
 		}
 
 		protected abstract void CreateBackground();
@@ -56,9 +58,22 @@ namespace Assets.Scripts.World
 			this.mainLayer.transform.parent = this.locationGameObject.transform;
 		}
 
-		public void UpdateBackgroundPosition(GameObject world)
+		protected float GetRelativeCharacterPosition(float position, float size)
 		{
+			return position / size + 0.5f;
+		}
 
+		protected float GetCharacterPositionOffset(float position, float size, float backgroundSize)
+		{
+			return GetRelativeCharacterPosition(position, size) * (size - backgroundSize) - (size - backgroundSize) / 2f;
+		}
+
+		public void UpdateBackgroundPosition(GameObject world, GameObject character)
+		{
+			float xOffset = GetCharacterPositionOffset(character.transform.position.x, this.size.x / 100f, this.backgroundSize.x / 100f);
+			float yOffset = GetCharacterPositionOffset(character.transform.position.y, this.size.y / 100f, this.backgroundSize.y / 100f);
+
+			this.backgroundGameObject.transform.position = new Vector3(xOffset, yOffset, 0f) + backgroundOffset;
 		}
 
 		protected abstract void CreateMainLayer();

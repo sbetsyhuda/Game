@@ -6,6 +6,8 @@ using Assets.Scripts.World;
 
 public class WorkWithWorld : MonoBehaviour
 {
+	public GameObject character;
+
 	public Texture blocksTexture;
 	public Vector2Int backgroundSize;
 	public Vector2Int backgroundPosition;
@@ -28,6 +30,6 @@ public class WorkWithWorld : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		this.reactangleRoom.UpdateBackgroundPosition(gameObject);
+		this.reactangleRoom.UpdateBackgroundPosition(gameObject, character);
     }
 }
