@@ -13,9 +13,13 @@ public class MovementControl : MonoBehaviour
     public LayerMask whatIsGround;
     public Transform groundCheck;
 
+    public LayerMask whatIsWall;
+    public Transform WallCheck;
+
     private float moveInput;
     private int jumpCount;
     private bool isGrounded;
+    private bool hitWall;
 
     //private Animator animator;
     private Rigidbody2D rb2d;
@@ -32,12 +36,17 @@ public class MovementControl : MonoBehaviour
     private void FixedUpdate()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
-        if(isGrounded)
+        hitWall = Physics2D.OverlapCircle(WallCheck.position, groundCheckRadius, whatIsWall); 
+        if (isGrounded)
         {
             jumpCount = 0;
         }
 
         moveInput = Input.GetAxis("Horizontal");
+        if(hitWall)
+        {
+            moveInput = 0;
+        }
         rb2d.velocity = new Vector2(defaultSpeed * moveInput, rb2d.velocity.y);
 
         if(facingRight && moveInput < 0 || !facingRight && moveInput > 0)
@@ -62,6 +71,8 @@ public class MovementControl : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+
+        Gizmos.DrawWireSphere(WallCheck.position, groundCheckRadius);
     }
 
     private void Flip()
