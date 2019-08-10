@@ -10,6 +10,7 @@ public class WorkWithWorld : MonoBehaviour
 
 	public Texture blocksTexture;
 	public Vector2Int backgroundSize;
+	public int roomDepth;
 	public Vector2Int backgroundPosition;
 
 	public Texture2D backgroundTexture;
@@ -19,10 +20,7 @@ public class WorkWithWorld : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-		this.reactangleRoom = new EarthenRectangleRoom(backgroundSize, backgroundPosition, this.blocksTexture);
-
-		this.backgroundTexture = this.reactangleRoom.GetBackgroundTexture2D();
-		this.backgroundSprite = this.reactangleRoom.GetBackgroundSprite();
+		this.reactangleRoom = new EarthenRectangleRoom(backgroundSize, roomDepth, backgroundPosition, this.blocksTexture);
 
 		this.reactangleRoom.AddLocationToWorld(gameObject);
     }
@@ -30,7 +28,6 @@ public class WorkWithWorld : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		this.reactangleRoom.UpdateBackgroundPosition(gameObject, character);
-		this.reactangleRoom.UpdateFrontLayerPosition(gameObject, character);
+
     }
 }

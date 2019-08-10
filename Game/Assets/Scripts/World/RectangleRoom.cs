@@ -11,16 +11,29 @@ namespace Assets.Scripts.World
 		protected Vector2Int[] availableBlocks;
 		protected float[] availableBlocksProbability;
 
+		protected GameObject floorCollision;
+		protected Vector2Int floorCollisionSize;
+		protected GameObject ceilingCollision;
+		protected Vector2Int ceilingCollisionSize;
+		protected GameObject leftWallCollision;
+		protected Vector2Int leftWallCollisionSize;
+		protected GameObject rightWallCollision;
+		protected Vector2Int rightWallCollisionSize;
+
 		protected GameObject floor;
+		protected Sprite floorSprite;
 		protected Vector2Int floorSize;
 		protected GameObject ceiling;
+		protected Sprite ceilingSprite;
 		protected Vector2Int ceilingSize;
 		protected GameObject leftWall;
+		protected Sprite leftWallSprite;
 		protected Vector2Int leftWallSize;
 		protected GameObject rightWall;
+		protected Sprite rightWallSprite;
 		protected Vector2Int rightWallSize;
-		
-		public ReactangleRoom(string name, Vector2Int size, Vector2Int position, Texture blocksTexture, Vector2Int blockSize, Vector2Int[] availableBlocks, float[] availableBlocksProbability) : base(name, size, position)
+
+		public ReactangleRoom(string name, Vector2Int size, int locationDepth, Vector2Int position, Texture blocksTexture, Vector2Int blockSize, Vector2Int[] availableBlocks, float[] availableBlocksProbability) : base(name, size, locationDepth, position)
 		{
 			this.blockSize = blockSize;
 			this.availableBlocks = availableBlocks;
@@ -48,7 +61,7 @@ namespace Assets.Scripts.World
 			return blocksOffset[index - 1];
 		}
 
-		protected bool BackgroundFill(Texture2D texture, Vector2Int[] blocksOffset, Vector2Int size)
+		protected bool FullFilling(Texture2D texture, Vector2Int[] blocksOffset, Vector2Int size)
 		{
 			for (int x = 0; x < size.x; x += this.blockSize.x)
 			{
@@ -78,9 +91,9 @@ namespace Assets.Scripts.World
 			return true;
 		}
 
-		protected void CreateSprite(ref Texture2D texture2D, ref Sprite sprite, Vector2Int size, System.Func<Texture2D, Vector2Int[], Vector2Int, bool> Fill)
+		protected void CreateSprite(ref Sprite sprite, Vector2Int size, System.Func<Texture2D, Vector2Int[], Vector2Int, bool> Fill)
 		{
-			texture2D = new Texture2D(size.x, size.y, TextureFormat.RGBA32, false);
+			Texture2D texture2D = new Texture2D(size.x, size.y, TextureFormat.RGBA32, false);
 
 			RenderTexture currentRenderTexture = RenderTexture.active;
 			RenderTexture blocksRenderTexture = RenderTexture.GetTemporary(this.blocksTexture.width, this.blocksTexture.height, 32);
@@ -118,19 +131,19 @@ namespace Assets.Scripts.World
 
 		protected override void CreateBackground()
 		{
-			this.backgroundSize = this.size - this.blockSize * 2;
+			this.backgroundSize = this.size;
 
-			CreateSprite(ref this.backgroundTexture, ref this.backgroundSprite, this.backgroundSize, BackgroundFill);
+			CreateSprite(ref this.backgroundSprite, this.backgroundSize, FullFilling);
 
 			AddBackgroundToLocation();
 		}
 
 		protected override void CreateFrontLayer()
 		{
-			this.frontLayerSize = this.size + this.blockSize * 4;
-			this.frontLayerInteriorSize = this.size + this.blockSize * 2;
+			this.frontLayerSize = this.size + this.blockSize * 2;
+			this.frontLayerInteriorSize = this.size;
 
-			CreateSprite(ref this.frontLayerTexture, ref this.frontLayerSprite, this.frontLayerSize, FrontLayerFill);
+			CreateSprite(ref this.frontLayerSprite, this.frontLayerSize, FrontLayerFill);
 
 			AddFrontLayerToLocation();
 		}
@@ -138,6 +151,11 @@ namespace Assets.Scripts.World
 		protected override void CreateMainLayer()
 		{
 			this.mainLayer = new GameObject("Main Layer");
+
+			CreatefloorCollision();
+			CreateceilingCollision();
+			CreateleftWallCollision();
+			CreaterightWallCollision();
 
 			CreateFloor();
 			CreateCeiling();
@@ -147,44 +165,71 @@ namespace Assets.Scripts.World
 			AddMainLayerToLocation();
 		}
 
-		protected void CreateMainLayerItem(ref GameObject mainLayerItem, Vector2Int itemSize,  string name, Vector3 position)
+		protected void CreatefloorCollision()
 		{
-			mainLayerItem = new GameObject(name);
-			mainLayerItem.transform.parent = this.mainLayer.transform;
-			BoxCollider2D boxCollider2D = mainLayerItem.AddComponent<BoxCollider2D>();
+			this.floorCollisionSize = new Vector2Int(this.size.x + this.blockSize.x * 2, this.blockSize.y);
 
-			boxCollider2D.size = new Vector2(itemSize.x / 100f, itemSize.y / 100f);
-			mainLayerItem.transform.position = position;
+			CreateItem(this.mainLayer, ref this.floorCollision, this.floorCollisionSize, "Floor Collision", new Vector3(0f, this.size.y / -200f - floorCollisionSize.y / 200f, 0f));
+
+			this.floorCollision.tag = "floor";
+			this.floorCollision.layer = 10;
 		}
 
 		protected void CreateFloor()
 		{
-			this.floorSize = new Vector2Int(this.size.x + this.blockSize.x * 2, this.blockSize.y);
+			this.floorSize = new Vector2Int(this.size.x, this.locationDepth);
 
-			CreateMainLayerItem(ref this.floor, this.floorSize, "Floor", new Vector3(0f, this.size.y / -200f - floorSize.y / 200f, 0f));
+			CreateSprite(ref this.floorSprite, this.floorSize, FullFilling);
 
-			this.floor.tag = "floor";
+			CreateItem(this.mainLayer, ref this.floor, "Floor", this.floorSprite, new Vector3(0f, this.size.y / -200f, 0f), Quaternion.Euler(90f, 0f, 0f));
 		}
 
 		protected void CreateCeiling()
 		{
-			this.ceilingSize = new Vector2Int(this.size.x + this.blockSize.x * 2, this.blockSize.y);
+			this.ceilingSize = new Vector2Int(this.size.x, this.locationDepth);
 
-			CreateMainLayerItem(ref this.ceiling, this.ceilingSize, "Ceiling", new Vector3(0f, this.size.y / 200f + floorSize.y / 200f, 0f));
+			CreateSprite(ref this.ceilingSprite, this.ceilingSize, FullFilling);
+
+			CreateItem(this.mainLayer, ref this.ceiling, "Ceiling", this.ceilingSprite, new Vector3(0f, this.size.y / 200f, 0f), Quaternion.Euler(-90f, 0f, 0f));
 		}
 
 		protected void CreateLeftWall()
 		{
-			this.leftWallSize = new Vector2Int(this.blockSize.x, this.size.y);
+			this.leftWallSize = new Vector2Int(this.locationDepth, this.size.y);
 
-			CreateMainLayerItem(ref this.leftWall, this.leftWallSize, "Left Wall", new Vector3(this.size.x / -200f - leftWallSize.x / 200f, 0f));
+			CreateSprite(ref this.leftWallSprite, this.leftWallSize, FullFilling);
+
+			CreateItem(this.mainLayer, ref this.leftWall, "LeftWall", this.leftWallSprite, new Vector3(this.size.x / -200f, 0f, 0f), Quaternion.Euler(0f, 90f, 0f));
 		}
 
 		protected void CreateRightWall()
 		{
-			this.rightWallSize = new Vector2Int(this.blockSize.x, this.size.y);
+			this.rightWallSize = new Vector2Int(this.locationDepth, this.size.y);
 
-			CreateMainLayerItem(ref this.rightWall, this.rightWallSize, "Right Wall", new Vector3(this.size.x / 200f + rightWallSize.x / 200f, 0f));
+			CreateSprite(ref this.rightWallSprite, this.rightWallSize, FullFilling);
+
+			CreateItem(this.mainLayer, ref this.rightWall, "RightWall", this.rightWallSprite, new Vector3(this.size.x / 200f, 0f, 0f), Quaternion.Euler(0f, -90f, 0f));
+		}
+
+		protected void CreateceilingCollision()
+		{
+			this.ceilingCollisionSize = new Vector2Int(this.size.x + this.blockSize.x * 2, this.blockSize.y);
+
+			CreateItem(this.mainLayer, ref this.ceilingCollision, this.ceilingCollisionSize, "Ceiling Collision", new Vector3(0f, this.size.y / 200f + floorCollisionSize.y / 200f, 0f));
+		}
+
+		protected void CreateleftWallCollision()
+		{
+			this.leftWallCollisionSize = new Vector2Int(this.blockSize.x, this.size.y);
+
+			CreateItem(this.mainLayer, ref this.leftWallCollision, this.leftWallCollisionSize, "Left Wall Collision", new Vector3(this.size.x / -200f - leftWallCollisionSize.x / 200f, 0f));
+		}
+
+		protected void CreaterightWallCollision()
+		{
+			this.rightWallCollisionSize = new Vector2Int(this.blockSize.x, this.size.y);
+
+			CreateItem(this.mainLayer, ref this.rightWallCollision, this.rightWallCollisionSize, "Right Wall Collision", new Vector3(this.size.x / 200f + rightWallCollisionSize.x / 200f, 0f));
 		}
 	}
 }

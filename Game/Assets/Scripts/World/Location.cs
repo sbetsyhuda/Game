@@ -14,7 +14,6 @@ namespace Assets.Scripts.World
 		protected GameObject background;
 		protected Vector2Int backgroundSize;
 		protected Vector3 backgroundOffset;
-		protected Texture2D backgroundTexture;
 		protected Sprite backgroundSprite;
 
 		protected GameObject mainLayer;
@@ -23,29 +22,22 @@ namespace Assets.Scripts.World
 		protected Vector2Int frontLayerSize;
 		protected Vector2Int frontLayerInteriorSize;
 		protected Vector3 frontLayerOffset;
-		protected Texture2D frontLayerTexture;
 		protected Sprite frontLayerSprite;
 
-		public Location(string name, Vector2Int size, Vector2Int position) : base(name, size, position)
+		protected int locationDepth;
+
+		public Location(string name, Vector2Int size, int locationDepth, Vector2Int position) : base(name, size, position)
 		{
+			this.locationDepth = locationDepth;
 			this.locationGameObject = new GameObject(name);
 			this.objects = new List<WorldObject>();
-			this.backgroundOffset = Vector3.forward;
-			this.frontLayerOffset = Vector3.back;
+			this.backgroundOffset = Vector3.forward * (this.locationDepth / 200f);
+			this.frontLayerOffset = Vector3.back * (this.locationDepth / 200f);
 		}
 
 		protected abstract void CreateBackground();
 
 		protected abstract void CreateFrontLayer();
-
-		public Texture2D GetBackgroundTexture2D()
-		{
-			return this.backgroundTexture;
-		}
-		public Sprite GetBackgroundSprite()
-		{
-			return this.backgroundSprite;
-		}
 
 		public void AddLocationToWorld(GameObject world)
 		{
@@ -53,24 +45,35 @@ namespace Assets.Scripts.World
 		}
 
 
-		protected void AddItemToLocation(ref GameObject item, string name, Sprite sprite, Vector3 offset)
+		protected void CreateItem(GameObject parent, ref GameObject item, string name, Sprite sprite, Vector3 position, Quaternion rotation)
 		{
 			item = new GameObject(name);
 			SpriteRenderer spriteRenderer = item.AddComponent<SpriteRenderer>();
 			spriteRenderer.sprite = sprite;
 
-			item.transform.parent = this.locationGameObject.transform;
-			item.transform.position = offset;
+			item.transform.parent = parent.transform;
+			item.transform.position = position;
+			item.transform.rotation = rotation;
+		}
+
+		protected void CreateItem(GameObject parent, ref GameObject item, Vector2Int itemSize, string name, Vector3 position)
+		{
+			item = new GameObject(name);
+			item.transform.parent = parent.transform;
+			BoxCollider2D boxCollider2D = item.AddComponent<BoxCollider2D>();
+
+			boxCollider2D.size = new Vector2(itemSize.x / 100f, itemSize.y / 100f);
+			item.transform.position = position;
 		}
 
 		protected void AddBackgroundToLocation()
 		{
-			AddItemToLocation(ref this.background, "Background", this.backgroundSprite, this.backgroundOffset);
+			CreateItem(this.locationGameObject, ref this.background, "Background", this.backgroundSprite, this.backgroundOffset, Quaternion.identity);
 		}
 
 		protected void AddFrontLayerToLocation()
 		{
-			AddItemToLocation(ref this.frontLayer, "Front Layer", this.frontLayerSprite, this.frontLayerOffset);
+			CreateItem(this.locationGameObject, ref this.frontLayer, "Front Layer", this.frontLayerSprite, this.frontLayerOffset, Quaternion.identity);
 		}
 
 		protected void AddMainLayerToLocation()
@@ -88,21 +91,6 @@ namespace Assets.Scripts.World
 			return GetRelativeCharacterPosition(position, size) * (size - backgroundSize) - (size - backgroundSize) / 2f;
 		}
 
-		public void UpdateBackgroundPosition(GameObject world, GameObject character)
-		{
-			float xOffset = GetCharacterPositionOffset(character.transform.position.x, this.size.x / 100f, this.backgroundSize.x / 100f);
-			float yOffset = GetCharacterPositionOffset(character.transform.position.y, this.size.y / 100f, this.backgroundSize.y / 100f);
-
-			this.background.transform.position = new Vector3(xOffset, yOffset, 0f) + this.backgroundOffset;
-		}
-
-		public void UpdateFrontLayerPosition(GameObject world, GameObject character)
-		{
-			float xOffset = GetCharacterPositionOffset(character.transform.position.x, this.size.x / 100f, this.frontLayerInteriorSize.x / 100f);
-			float yOffset = GetCharacterPositionOffset(character.transform.position.y, this.size.y / 100f, this.frontLayerInteriorSize.y / 100f);
-
-			this.frontLayer.transform.position = new Vector3(xOffset, yOffset, 0f) + this.frontLayerOffset;
-		}
 
 		protected abstract void CreateMainLayer();
 	}
