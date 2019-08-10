@@ -152,10 +152,10 @@ namespace Assets.Scripts.World
 		{
 			this.mainLayer = new GameObject("Main Layer");
 
-			CreatefloorCollision();
-			CreateceilingCollision();
-			CreateleftWallCollision();
-			CreaterightWallCollision();
+			CreateFloorCollision();
+			CreateCeilingCollision();
+			CreateLeftWallCollision();
+			CreateRightWallCollision();
 
 			CreateFloor();
 			CreateCeiling();
@@ -165,7 +165,7 @@ namespace Assets.Scripts.World
 			AddMainLayerToLocation();
 		}
 
-		protected void CreatefloorCollision()
+		protected void CreateFloorCollision()
 		{
 			this.floorCollisionSize = new Vector2Int(this.size.x + this.blockSize.x * 2, this.blockSize.y);
 
@@ -174,6 +174,28 @@ namespace Assets.Scripts.World
 			this.floorCollision.tag = "floor";
 			this.floorCollision.layer = 10;
 		}
+
+		protected void CreateCeilingCollision()
+		{
+			this.ceilingCollisionSize = new Vector2Int(this.size.x + this.blockSize.x * 2, this.blockSize.y);
+
+			CreateItem(this.mainLayer, ref this.ceilingCollision, this.ceilingCollisionSize, "Ceiling Collision", new Vector3(0f, this.size.y / 200f + floorCollisionSize.y / 200f, 0f));
+		}
+
+		protected void CreateLeftWallCollision()
+		{
+			this.leftWallCollisionSize = new Vector2Int(this.blockSize.x, this.size.y);
+
+			CreateItem(this.mainLayer, ref this.leftWallCollision, this.leftWallCollisionSize, "Left Wall Collision", new Vector3(this.size.x / -200f - leftWallCollisionSize.x / 200f, 0f));
+		}
+
+		protected void CreateRightWallCollision()
+		{
+			this.rightWallCollisionSize = new Vector2Int(this.blockSize.x, this.size.y);
+
+			CreateItem(this.mainLayer, ref this.rightWallCollision, this.rightWallCollisionSize, "Right Wall Collision", new Vector3(this.size.x / 200f + rightWallCollisionSize.x / 200f, 0f));
+		}
+
 
 		protected void CreateFloor()
 		{
@@ -211,25 +233,5 @@ namespace Assets.Scripts.World
 			CreateItem(this.mainLayer, ref this.rightWall, "RightWall", this.rightWallSprite, new Vector3(this.size.x / 200f, 0f, 0f), Quaternion.Euler(0f, -90f, 0f));
 		}
 
-		protected void CreateceilingCollision()
-		{
-			this.ceilingCollisionSize = new Vector2Int(this.size.x + this.blockSize.x * 2, this.blockSize.y);
-
-			CreateItem(this.mainLayer, ref this.ceilingCollision, this.ceilingCollisionSize, "Ceiling Collision", new Vector3(0f, this.size.y / 200f + floorCollisionSize.y / 200f, 0f));
-		}
-
-		protected void CreateleftWallCollision()
-		{
-			this.leftWallCollisionSize = new Vector2Int(this.blockSize.x, this.size.y);
-
-			CreateItem(this.mainLayer, ref this.leftWallCollision, this.leftWallCollisionSize, "Left Wall Collision", new Vector3(this.size.x / -200f - leftWallCollisionSize.x / 200f, 0f));
-		}
-
-		protected void CreaterightWallCollision()
-		{
-			this.rightWallCollisionSize = new Vector2Int(this.blockSize.x, this.size.y);
-
-			CreateItem(this.mainLayer, ref this.rightWallCollision, this.rightWallCollisionSize, "Right Wall Collision", new Vector3(this.size.x / 200f + rightWallCollisionSize.x / 200f, 0f));
-		}
 	}
 }

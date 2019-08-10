@@ -36,14 +36,13 @@ namespace Assets.Scripts.World
 		}
 
 		protected abstract void CreateBackground();
-
 		protected abstract void CreateFrontLayer();
+		protected abstract void CreateMainLayer();
 
 		public void AddLocationToWorld(GameObject world)
 		{
 			this.locationGameObject.transform.parent = world.transform;
 		}
-
 
 		protected void CreateItem(GameObject parent, ref GameObject item, string name, Sprite sprite, Vector3 position, Quaternion rotation)
 		{
@@ -81,17 +80,5 @@ namespace Assets.Scripts.World
 			this.mainLayer.transform.parent = this.locationGameObject.transform;
 		}
 
-		protected float GetRelativeCharacterPosition(float position, float size)
-		{
-			return position / size + 0.5f;
-		}
-
-		protected float GetCharacterPositionOffset(float position, float size, float backgroundSize)
-		{
-			return GetRelativeCharacterPosition(position, size) * (size - backgroundSize) - (size - backgroundSize) / 2f;
-		}
-
-
-		protected abstract void CreateMainLayer();
 	}
 }
