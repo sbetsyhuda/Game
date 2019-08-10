@@ -7,6 +7,7 @@ using Assets.Scripts.World;
 public class WorkWithWorld : MonoBehaviour
 {
 	public GameObject character;
+	public GameObject mainCamera;
 
 	public Texture blocksTexture;
 	public Vector2Int backgroundSize;
@@ -28,6 +29,6 @@ public class WorkWithWorld : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+		this.reactangleRoom.UpdateForeGroundStatus(mainCamera);
     }
 }

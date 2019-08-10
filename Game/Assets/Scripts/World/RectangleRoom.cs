@@ -22,15 +22,19 @@ namespace Assets.Scripts.World
 
 		protected GameObject floor;
 		protected Sprite floorSprite;
+		protected SpriteRenderer floorSpriteRenderer;
 		protected Vector2Int floorSize;
 		protected GameObject ceiling;
 		protected Sprite ceilingSprite;
+		protected SpriteRenderer ceilingSpriteRenderer;
 		protected Vector2Int ceilingSize;
 		protected GameObject leftWall;
 		protected Sprite leftWallSprite;
+		protected SpriteRenderer leftWallSpriteRenderer;
 		protected Vector2Int leftWallSize;
 		protected GameObject rightWall;
 		protected Sprite rightWallSprite;
+		protected SpriteRenderer rightWallSpriteRenderer;
 		protected Vector2Int rightWallSize;
 
 		public ReactangleRoom(string name, Vector2Int size, int locationDepth, Vector2Int position, Texture blocksTexture, Vector2Int blockSize, Vector2Int[] availableBlocks, float[] availableBlocksProbability) : base(name, size, locationDepth, position)
@@ -44,6 +48,7 @@ namespace Assets.Scripts.World
 
 			CreateBackground();
 			CreateFrontLayer();
+			CreateForeground();
 		}
 
 		protected Vector2 GetRandomBlockFromBlocksOffset(ref Vector2Int[] blocksOffset, Vector2Int size)
@@ -148,6 +153,15 @@ namespace Assets.Scripts.World
 			AddFrontLayerToLocation();
 		}
 
+		protected override void CreateForeground()
+		{
+			this.foregroundSize = this.size;
+
+			CreateSprite(ref this.foregroundSprite, this.foregroundSize, FullFilling);
+
+			AddForegroundToLocation();
+		}
+
 		protected override void CreateMainLayer()
 		{
 			this.mainLayer = new GameObject("Main Layer");
@@ -203,7 +217,7 @@ namespace Assets.Scripts.World
 
 			CreateSprite(ref this.floorSprite, this.floorSize, FullFilling);
 
-			CreateItem(this.mainLayer, ref this.floor, "Floor", this.floorSprite, new Vector3(0f, this.size.y / -200f, 0f), Quaternion.Euler(90f, 0f, 0f));
+			CreateItem(this.mainLayer, ref this.floor, "Floor", this.floorSprite, ref this.floorSpriteRenderer, new Vector3(0f, this.size.y / -200f, 0f), Quaternion.Euler(90f, 0f, 0f));
 		}
 
 		protected void CreateCeiling()
@@ -212,7 +226,7 @@ namespace Assets.Scripts.World
 
 			CreateSprite(ref this.ceilingSprite, this.ceilingSize, FullFilling);
 
-			CreateItem(this.mainLayer, ref this.ceiling, "Ceiling", this.ceilingSprite, new Vector3(0f, this.size.y / 200f, 0f), Quaternion.Euler(-90f, 0f, 0f));
+			CreateItem(this.mainLayer, ref this.ceiling, "Ceiling", this.ceilingSprite, ref this.ceilingSpriteRenderer, new Vector3(0f, this.size.y / 200f, 0f), Quaternion.Euler(-90f, 0f, 0f));
 		}
 
 		protected void CreateLeftWall()
@@ -221,7 +235,7 @@ namespace Assets.Scripts.World
 
 			CreateSprite(ref this.leftWallSprite, this.leftWallSize, FullFilling);
 
-			CreateItem(this.mainLayer, ref this.leftWall, "LeftWall", this.leftWallSprite, new Vector3(this.size.x / -200f, 0f, 0f), Quaternion.Euler(0f, 90f, 0f));
+			CreateItem(this.mainLayer, ref this.leftWall, "LeftWall", this.leftWallSprite, ref this.leftWallSpriteRenderer, new Vector3(this.size.x / -200f, 0f, 0f), Quaternion.Euler(0f, 90f, 0f));
 		}
 
 		protected void CreateRightWall()
@@ -230,7 +244,7 @@ namespace Assets.Scripts.World
 
 			CreateSprite(ref this.rightWallSprite, this.rightWallSize, FullFilling);
 
-			CreateItem(this.mainLayer, ref this.rightWall, "RightWall", this.rightWallSprite, new Vector3(this.size.x / 200f, 0f, 0f), Quaternion.Euler(0f, -90f, 0f));
+			CreateItem(this.mainLayer, ref this.rightWall, "RightWall", this.rightWallSprite, ref this.rightWallSpriteRenderer, new Vector3(this.size.x / 200f, 0f, 0f), Quaternion.Euler(0f, -90f, 0f));
 		}
 
 	}

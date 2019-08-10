@@ -15,6 +15,13 @@ namespace Assets.Scripts.World
 		protected Vector2Int backgroundSize;
 		protected Vector3 backgroundOffset;
 		protected Sprite backgroundSprite;
+		protected SpriteRenderer backgroundSpriteRenderer;
+
+		protected GameObject foreground;
+		protected Vector2Int foregroundSize;
+		protected Vector3 foregroundOffset;
+		protected Sprite foregroundSprite;
+		protected SpriteRenderer foregroundSpriteRenderer;
 
 		protected GameObject mainLayer;
 
@@ -23,6 +30,7 @@ namespace Assets.Scripts.World
 		protected Vector2Int frontLayerInteriorSize;
 		protected Vector3 frontLayerOffset;
 		protected Sprite frontLayerSprite;
+		protected SpriteRenderer frontLayerSpriteRenderer;
 
 		protected int locationDepth;
 
@@ -32,11 +40,13 @@ namespace Assets.Scripts.World
 			this.locationGameObject = new GameObject(name);
 			this.objects = new List<WorldObject>();
 			this.backgroundOffset = Vector3.forward * (this.locationDepth / 200f);
+			this.foregroundOffset = Vector3.back * (this.locationDepth / 200f);
 			this.frontLayerOffset = Vector3.back * (this.locationDepth / 200f);
 		}
 
 		protected abstract void CreateBackground();
 		protected abstract void CreateFrontLayer();
+		protected abstract void CreateForeground();
 		protected abstract void CreateMainLayer();
 
 		public void AddLocationToWorld(GameObject world)
@@ -44,10 +54,10 @@ namespace Assets.Scripts.World
 			this.locationGameObject.transform.parent = world.transform;
 		}
 
-		protected void CreateItem(GameObject parent, ref GameObject item, string name, Sprite sprite, Vector3 position, Quaternion rotation)
+		protected void CreateItem(GameObject parent, ref GameObject item, string name, Sprite sprite, ref SpriteRenderer spriteRenderer, Vector3 position, Quaternion rotation)
 		{
 			item = new GameObject(name);
-			SpriteRenderer spriteRenderer = item.AddComponent<SpriteRenderer>();
+			spriteRenderer = item.AddComponent<SpriteRenderer>();
 			spriteRenderer.sprite = sprite;
 
 			item.transform.parent = parent.transform;
@@ -67,17 +77,42 @@ namespace Assets.Scripts.World
 
 		protected void AddBackgroundToLocation()
 		{
-			CreateItem(this.locationGameObject, ref this.background, "Background", this.backgroundSprite, this.backgroundOffset, Quaternion.identity);
+			CreateItem(this.locationGameObject, ref this.background, "Background", this.backgroundSprite, ref this.backgroundSpriteRenderer, this.backgroundOffset, Quaternion.identity);
 		}
 
 		protected void AddFrontLayerToLocation()
 		{
-			CreateItem(this.locationGameObject, ref this.frontLayer, "Front Layer", this.frontLayerSprite, this.frontLayerOffset, Quaternion.identity);
+			CreateItem(this.locationGameObject, ref this.frontLayer, "Front Layer", this.frontLayerSprite, ref this.frontLayerSpriteRenderer, this.frontLayerOffset, Quaternion.identity);
 		}
 
+		protected void AddForegroundToLocation()
+		{
+			CreateItem(this.locationGameObject, ref this.foreground, "Foreground", this.foregroundSprite, ref this.foregroundSpriteRenderer, this.foregroundOffset, Quaternion.Euler(180f, 0f, 0f));
+		}
+		
 		protected void AddMainLayerToLocation()
 		{
 			this.mainLayer.transform.parent = this.locationGameObject.transform;
+		}
+
+
+		protected Vector2 GetSizeInGame(Vector2Int size)
+		{
+			return new Vector2(size.x / 100f, size.y / 100f);
+		}
+
+		protected bool CameraInLocation(GameObject camera)
+		{
+			Vector2 position = new Vector2(camera.transform.position.x, camera.transform.position.y) + GetSizeInGame(this.size) / 2f;
+
+			return position.x > 0f && position.y > 0f && position.x < GetSizeInGame(this.size).x && position.y < GetSizeInGame(this.size).y;
+		}
+
+		public void UpdateForeGroundStatus(GameObject camera)
+		{
+			bool cameraInLocation = CameraInLocation(camera);
+			this.foregroundSpriteRenderer.enabled = !cameraInLocation;
+			this.frontLayerSpriteRenderer.enabled = cameraInLocation;
 		}
 
 	}
