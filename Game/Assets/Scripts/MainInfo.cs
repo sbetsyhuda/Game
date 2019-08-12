@@ -10,5 +10,16 @@ namespace Assets.Scripts
     {
         public string name;
         public string description;
+
+		public MainInfo(string name) : this(name, "")
+		{
+
+		}
+
+		public MainInfo(string name, string description)
+		{
+			this.name = name;
+			this.description = description;
+		}
     }
 }
